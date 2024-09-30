@@ -74,10 +74,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+  
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -99,7 +101,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="b780f728" class="cell" data-execution_count="1">
+<div id="28abe58b" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> vega_datasets <span class="im">import</span> data</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itables <span class="im">import</span> init_notebook_mode</span>
@@ -206,7 +208,7 @@ This is the <code>init_notebook_mode</code> cell from ITables v2.2.2<br>
 </div>
 </div>
 </div>
-<div id="c7e92731" class="cell" data-execution_count="2">
+<div id="acdf9008" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dataset <span class="kw">in</span> data.list_datasets():</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(dataset)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -282,117 +284,165 @@ world-110m
 zipcodes</code></pre>
 </div>
 </div>
-<div id="21cb154c" class="cell" data-execution_count="3">
+<div id="b2fb4486" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> vega_datasets <span class="im">import</span> data</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itables <span class="im">import</span> show</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> textwrap</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dataset_info(dataset_name):</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> data(dataset_name)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(df) <span class="op">&gt;</span> <span class="dv">100</span>:</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            df <span class="op">=</span> df.head(<span class="dv">100</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"name"</span>: dataset_name,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"df"</span>: df,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"rows"</span>: <span class="bu">len</span>(df),</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"columns"</span>: <span class="bu">len</span>(df.columns),</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"size_kb"</span>: df.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1024</span>,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>dataset_names <span class="op">=</span> [</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"7zip"</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"airports"</span>,</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"annual-precip"</span>,</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"anscombe"</span>,</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"barley"</span>,</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"birdstrikes"</span>,</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"budget"</span>,</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"budgets"</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"burtin"</span>,</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cars"</span>,</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"climate"</span>,</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"co2-concentration"</span>,</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"countries"</span>,</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"crimea"</span>,</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"disasters"</span>,</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"driving"</span>,</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"earthquakes"</span>,</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ffox"</span>,</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flare"</span>,</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flare-dependencies"</span>,</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-10k"</span>,</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-20k"</span>,</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-2k"</span>,</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-5k"</span>,</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-airport"</span>,</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gapminder"</span>,</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gapminder-health-income"</span>,</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gimp"</span>,</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    <span class="st">"github"</span>,</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="st">"graticule"</span>,</span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    <span class="st">"income"</span>,</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="st">"iowa-electricity"</span>,</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="st">"iris"</span>,</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="st">"jobs"</span>,</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="st">"la-riots"</span>,</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="st">"londonBoroughs"</span>,</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    <span class="st">"londonCentroids"</span>,</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">"londonTubeLines"</span>,</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lookup_groups"</span>,</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lookup_people"</span>,</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    <span class="st">"miserables"</span>,</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    <span class="st">"monarchs"</span>,</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="st">"movies"</span>,</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="st">"normal-2d"</span>,</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="st">"obesity"</span>,</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ohlc"</span>,</span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="st">"points"</span>,</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="st">"population"</span>,</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>    <span class="st">"population_engineers_hurricanes"</span>,</span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>    <span class="st">"seattle-temps"</span>,</span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>    <span class="st">"seattle-weather"</span>,</span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sf-temps"</span>,</span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp500"</span>,</span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    <span class="st">"stocks"</span>,</span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>    <span class="st">"udistrict"</span>,</span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unemployment"</span>,</span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unemployment-across-industries"</span>,</span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>    <span class="st">"uniform-2d"</span>,</span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>    <span class="st">"us-10m"</span>,</span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>    <span class="st">"us-employment"</span>,</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>    <span class="st">"us-state-capitals"</span>,</span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>    <span class="st">"volcano"</span>,</span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weather"</span>,</span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weball26"</span>,</span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    <span class="st">"wheat"</span>,</span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>    <span class="st">"windvectors"</span>,</span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>    <span class="st">"world-110m"</span>,</span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    <span class="st">"zipcodes"</span>,</span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>dataset_info <span class="op">=</span> [get_dataset_info(name) <span class="cf">for</span> name <span class="kw">in</span> dataset_names]</span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>dataset_info <span class="op">=</span> [</span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>    info <span class="cf">for</span> info <span class="kw">in</span> dataset_info <span class="cf">if</span> info <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> info[<span class="st">"size_kb"</span>] <span class="op">&gt;</span> <span class="dv">0</span></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> info <span class="kw">in</span> dataset_info:</span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Dataset: </span><span class="sc">{</span>info[<span class="st">'name'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Rows: </span><span class="sc">{</span>info[<span class="st">'rows'</span>]<span class="sc">}</span><span class="ss">, Columns: </span><span class="sc">{</span>info[<span class="st">'columns'</span>]<span class="sc">}</span><span class="ss">, Size: </span><span class="sc">{</span>info[<span class="st">'size_kb'</span>]<span class="sc">:.2f}</span><span class="ss"> KB"</span></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>    show(info[<span class="st">"df"</span>], caption<span class="op">=</span><span class="ss">f"Top 100 rows of </span><span class="sc">{</span>info[<span class="st">'name'</span>]<span class="sc">}</span><span class="ss"> dataset"</span>)</span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>dataset_descriptions <span class="op">=</span> {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"7zip"</span>: <span class="st">"Application icon from the open-source 7-Zip software project."</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"airports"</span>: <span class="st">"Airport data, source not specified in the original description."</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"annual-precip"</span>: <span class="st">"A raster grid of global annual precipitation for the year 2016 at a resolution 1 degree of lon/lat per cell, from CFSv2."</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"anscombe"</span>: <span class="st">"Dataset from 'Graphs in Statistical Analysis' by F. J. Anscombe, The American Statistician."</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"barley"</span>: <span class="st">"Results from a 1930s agricultural experiment in Minnesota, containing yields for 10 different varieties of barley at six different sites."</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"birdstrikes"</span>: <span class="st">"Bird strike data from http://wildlife.faa.gov"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"budget"</span>: <span class="st">"U.S. Budget data for FY 2016 from the Office of Management and Budget."</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"burtin"</span>: <span class="st">"Dataset based on Will Burtin's 1951 visualization of antibiotic effectiveness, comparing three antibiotics against 16 bacteria."</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cars"</span>: <span class="st">"Car statistics dataset from http://lib.stat.cmu.edu/datasets/"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"countries"</span>: <span class="st">"Demographic indicators (life expectancy and fertility rate) for various countries from 1955 to 2000 at 5-year intervals."</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"crimea"</span>: <span class="st">"Data related to Florence Nightingale's famous 'Coxcomb' chart about mortality in the Crimean War."</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"disasters"</span>: <span class="st">"Natural disaster data from https://ourworldindata.org/natural-catastrophes"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"driving"</span>: <span class="st">"Driving statistics, possibly related to a New York Times article from May 2, 2010."</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"earthquakes"</span>: <span class="st">"Earthquake data from USGS, captured on Feb 6, 2018."</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ffox"</span>: <span class="st">"Application icon from the open-source Firefox software project."</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flare"</span>: <span class="st">"Hierarchical data, possibly related to software architecture or dependencies."</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-10k"</span>: <span class="st">"Flight delay statistics from U.S. Bureau of Transportation Statistics, subset of 10,000 records."</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gapminder"</span>: <span class="st">"Demographic indicators (life expectancy, population, and fertility rate) for various countries from 1955 to 2005 at 5-year intervals."</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gimp"</span>: <span class="st">"Application icon from the open-source GIMP software project."</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"github"</span>: <span class="st">"GitHub-related data, generated using a custom script."</span>,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"iowa-electricity"</span>: <span class="st">"Annual net generation of electricity in Iowa by source, compiled by the U.S. Energy Information Administration."</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"jobs"</span>: <span class="st">"U.S. census data on occupations by sex and year across decades between 1850 and 2000."</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"miserables"</span>: <span class="st">"Co-occurrence of characters in Victor Hugo's Les Misérables."</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"monarchs"</span>: <span class="st">"Chronological list of English and British monarchs from Elizabeth I through George IV."</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"movies"</span>: <span class="st">"Movie dataset with intentionally included errors for instructional purposes."</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"population"</span>: <span class="st">"United States population statistics by sex and age group across decades between 1850 and 2000."</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"seattle-weather"</span>: <span class="st">"Daily weather records for Seattle with metric units, synthesized from NOAA data."</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp500"</span>: <span class="st">"S&amp;P 500 index values from 2000 to 2020, retrieved from Yahoo Finance."</span>,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unemployment"</span>: <span class="st">"County-level unemployment rates in the United States, generally consistent with 2009 levels."</span>,</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"us-10m"</span>: <span class="st">"U.S. map data at 1:10 million scale."</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"volcano"</span>: <span class="st">"Topographic information for Maunga Whau (Mt Eden) volcano in Auckland, New Zealand."</span>,</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weather"</span>: <span class="st">"Instructional dataset showing actual and predicted temperature data."</span>,</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"wheat"</span>: <span class="st">"250 years of wheat prices alongside weekly wages and reigning monarchs, based on William Playfair's 1822 chart."</span>,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"zipcodes"</span>: <span class="st">"Zipcode data from GeoNames.org"</span>,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dataset_info(dataset_name):</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> data(dataset_name)</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(df) <span class="op">&gt;</span> <span class="dv">100</span>:</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>            df <span class="op">=</span> df.head(<span class="dv">100</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>            <span class="st">"name"</span>: dataset_name,</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>            <span class="st">"df"</span>: df,</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>            <span class="st">"rows"</span>: <span class="bu">len</span>(df),</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>            <span class="st">"columns"</span>: <span class="bu">len</span>(df.columns),</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>            <span class="st">"size_kb"</span>: df.memory_usage(deep<span class="op">=</span><span class="va">True</span>).<span class="bu">sum</span>() <span class="op">/</span> <span class="dv">1024</span>,</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>            <span class="st">"description"</span>: dataset_descriptions.get(</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>                dataset_name, <span class="st">"No description available."</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>dataset_names <span class="op">=</span> [</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    <span class="st">"7zip"</span>,</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="st">"airports"</span>,</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="st">"annual-precip"</span>,</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="st">"anscombe"</span>,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="st">"barley"</span>,</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="st">"birdstrikes"</span>,</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="st">"budget"</span>,</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>    <span class="st">"budgets"</span>,</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>    <span class="st">"burtin"</span>,</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cars"</span>,</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="st">"climate"</span>,</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    <span class="st">"co2-concentration"</span>,</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    <span class="st">"countries"</span>,</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>    <span class="st">"crimea"</span>,</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>    <span class="st">"disasters"</span>,</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>    <span class="st">"driving"</span>,</span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>    <span class="st">"earthquakes"</span>,</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ffox"</span>,</span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flare"</span>,</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flare-dependencies"</span>,</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-10k"</span>,</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-20k"</span>,</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-2k"</span>,</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-5k"</span>,</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flights-airport"</span>,</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gapminder"</span>,</span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gapminder-health-income"</span>,</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>    <span class="st">"gimp"</span>,</span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>    <span class="st">"github"</span>,</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>    <span class="st">"graticule"</span>,</span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>    <span class="st">"income"</span>,</span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>    <span class="st">"iowa-electricity"</span>,</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>    <span class="st">"iris"</span>,</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>    <span class="st">"jobs"</span>,</span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>    <span class="st">"la-riots"</span>,</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>    <span class="st">"londonBoroughs"</span>,</span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>    <span class="st">"londonCentroids"</span>,</span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>    <span class="st">"londonTubeLines"</span>,</span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lookup_groups"</span>,</span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lookup_people"</span>,</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>    <span class="st">"miserables"</span>,</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>    <span class="st">"monarchs"</span>,</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>    <span class="st">"movies"</span>,</span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>    <span class="st">"normal-2d"</span>,</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>    <span class="st">"obesity"</span>,</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ohlc"</span>,</span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>    <span class="st">"points"</span>,</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>    <span class="st">"population"</span>,</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>    <span class="st">"population_engineers_hurricanes"</span>,</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>    <span class="st">"seattle-temps"</span>,</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>    <span class="st">"seattle-weather"</span>,</span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sf-temps"</span>,</span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp500"</span>,</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>    <span class="st">"stocks"</span>,</span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>    <span class="st">"udistrict"</span>,</span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unemployment"</span>,</span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unemployment-across-industries"</span>,</span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>    <span class="st">"uniform-2d"</span>,</span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>    <span class="st">"us-10m"</span>,</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>    <span class="st">"us-employment"</span>,</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>    <span class="st">"us-state-capitals"</span>,</span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>    <span class="st">"volcano"</span>,</span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weather"</span>,</span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weball26"</span>,</span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>    <span class="st">"wheat"</span>,</span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    <span class="st">"windvectors"</span>,</span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>    <span class="st">"world-110m"</span>,</span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>    <span class="st">"zipcodes"</span>,</span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>dataset_info <span class="op">=</span> [get_dataset_info(name) <span class="cf">for</span> name <span class="kw">in</span> dataset_names]</span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>dataset_info <span class="op">=</span> [</span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>    info <span class="cf">for</span> info <span class="kw">in</span> dataset_info <span class="cf">if</span> info <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> info[<span class="st">"size_kb"</span>] <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> info <span class="kw">in</span> dataset_info:</span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n\n</span><span class="ss">## </span><span class="sc">{</span>info[<span class="st">'name'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(</span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Rows: </span><span class="sc">{</span>info[<span class="st">'rows'</span>]<span class="sc">}</span><span class="ss">, Columns: </span><span class="sc">{</span>info[<span class="st">'columns'</span>]<span class="sc">}</span><span class="ss">, Size: </span><span class="sc">{</span>info[<span class="st">'size_kb'</span>]<span class="sc">:.2f}</span><span class="ss"> KB"</span></span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">**Description:**"</span>)</span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(textwrap.fill(info[<span class="st">"description"</span>], width<span class="op">=</span><span class="dv">80</span>))</span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>    show(info[<span class="st">"df"</span>], caption<span class="op">=</span><span class="ss">f"Top 100 rows of </span><span class="sc">{</span>info[<span class="st">'name'</span>]<span class="sc">}</span><span class="ss"> dataset"</span>)</span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Dataset: airports
-Rows: 100, Columns: 7, Size: 28.76 KB</code></pre>
+<pre><code>
+
+## airports
+Rows: 100, Columns: 7, Size: 28.76 KB
+
+**Description:**
+Airport data, source not specified in the original description.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_c99ba6d8_b5df_41e8_8cc4_d05f5980bf0c" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_2ebe467f_183d_4d6e_bfbe_c64247bcd18a" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of airports dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -475,7 +525,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_c99ba6d8_b5df_41e8_8cc4_d05f5980bf0c:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_2ebe467f_183d_4d6e_bfbe_c64247bcd18a:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -494,11 +544,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: anscombe
-Rows: 44, Columns: 3, Size: 3.01 KB</code></pre>
+
+
+## anscombe
+Rows: 44, Columns: 3, Size: 3.01 KB
+
+**Description:**
+Dataset from 'Graphs in Statistical Analysis' by F. J. Anscombe, The American
+Statistician.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_ac0d9c45_1f09_43cf_acc7_c2ccfcd69371" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_853da2af_3ca6_4632_82e6_50ab26dd6211" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of anscombe dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -577,7 +633,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_ac0d9c45_1f09_43cf_acc7_c2ccfcd69371:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_853da2af_3ca6_4632_82e6_50ab26dd6211:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -596,11 +652,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: barley
-Rows: 100, Columns: 4, Size: 12.88 KB</code></pre>
+
+
+## barley
+Rows: 100, Columns: 4, Size: 12.88 KB
+
+**Description:**
+Results from a 1930s agricultural experiment in Minnesota, containing yields for
+10 different varieties of barley at six different sites.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_6856f21b_ee93_41a2_8058_8c67692e4d22" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_0595478a_0863_4dee_8799_654446e20bd8" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of barley dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -680,7 +742,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_6856f21b_ee93_41a2_8058_8c67692e4d22:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_0595478a_0863_4dee_8799_654446e20bd8:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -699,11 +761,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: birdstrikes
-Rows: 100, Columns: 14, Size: 61.23 KB</code></pre>
+
+
+## birdstrikes
+Rows: 100, Columns: 14, Size: 61.23 KB
+
+**Description:**
+Bird strike data from http://wildlife.faa.gov</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_2b78bee9_1a33_4358_a56b_5802799d7493" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_41cabd82_9ab3_43a9_983c_69b2a4ce84fd" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of birdstrikes dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -793,7 +860,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_2b78bee9_1a33_4358_a56b_5802799d7493:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_41cabd82_9ab3_43a9_983c_69b2a4ce84fd:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -812,11 +879,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: budget
-Rows: 100, Columns: 72, Size: 359.72 KB</code></pre>
+
+
+## budget
+Rows: 100, Columns: 72, Size: 359.72 KB
+
+**Description:**
+U.S. Budget data for FY 2016 from the Office of Management and Budget.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_85ef77db_b6e4_41e4_9b61_ba3b3d8e56a1" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_ac1078be_fd7c_40ab_b1ec_9f52ca9e382b" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of budget dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -964,7 +1036,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_85ef77db_b6e4_41e4_9b61_ba3b3d8e56a1:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_ac1078be_fd7c_40ab_b1ec_9f52ca9e382b:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -983,11 +1055,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: budgets
-Rows: 100, Columns: 3, Size: 2.47 KB</code></pre>
+
+
+## budgets
+Rows: 100, Columns: 3, Size: 2.47 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_df49ae94_1459_46b7_b372_fc3ac9878f41" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_6d05b18b_47bd_46d8_9042_50af3d93aa2d" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of budgets dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1066,7 +1143,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_df49ae94_1459_46b7_b372_fc3ac9878f41:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_6d05b18b_47bd_46d8_9042_50af3d93aa2d:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1085,11 +1162,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: burtin
-Rows: 16, Columns: 6, Size: 3.39 KB</code></pre>
+
+
+## burtin
+Rows: 16, Columns: 6, Size: 3.39 KB
+
+**Description:**
+Dataset based on Will Burtin's 1951 visualization of antibiotic effectiveness,
+comparing three antibiotics against 16 bacteria.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_fc423fbd_f0a1_4198_b217_966015168171" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_5564854f_5849_409d_89e9_5e2b495d59ab" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of burtin dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1171,7 +1254,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_fc423fbd_f0a1_4198_b217_966015168171:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_5564854f_5849_409d_89e9_5e2b495d59ab:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1190,11 +1273,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: cars
-Rows: 100, Columns: 9, Size: 17.21 KB</code></pre>
+
+
+## cars
+Rows: 100, Columns: 9, Size: 17.21 KB
+
+**Description:**
+Car statistics dataset from http://lib.stat.cmu.edu/datasets/</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_b02ed4db_0c74_4419_979a_58898dc4e1b5" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_a1aed1e0_02b6_49e3_b07f_f43587f1bd7e" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of cars dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1279,7 +1367,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_b02ed4db_0c74_4419_979a_58898dc4e1b5:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_a1aed1e0_02b6_49e3_b07f_f43587f1bd7e:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1298,11 +1386,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: climate
-Rows: 100, Columns: 9, Size: 19.95 KB</code></pre>
+
+
+## climate
+Rows: 100, Columns: 9, Size: 19.95 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_a280b678_4941_44ee_9318_732e010cde11" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_b757298b_8fb0_4f6e_a7e5_11e0d75b4ce5" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of climate dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1387,7 +1480,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_a280b678_4941_44ee_9318_732e010cde11:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_b757298b_8fb0_4f6e_a7e5_11e0d75b4ce5:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1406,11 +1499,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: co2-concentration
-Rows: 100, Columns: 2, Size: 6.67 KB</code></pre>
+
+
+## co2-concentration
+Rows: 100, Columns: 2, Size: 6.67 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_06aff889_4330_43cd_bcc9_78099b6b78ce" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_d22e462b_0a4d_471b_8dc0_562582218972" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of co2-concentration dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1488,7 +1586,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_06aff889_4330_43cd_bcc9_78099b6b78ce:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_d22e462b_0a4d_471b_8dc0_562582218972:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1507,11 +1605,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: countries
-Rows: 100, Columns: 9, Size: 14.33 KB</code></pre>
+
+
+## countries
+Rows: 100, Columns: 9, Size: 14.33 KB
+
+**Description:**
+Demographic indicators (life expectancy and fertility rate) for various
+countries from 1955 to 2000 at 5-year intervals.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_816649fd_187a_4e7c_9d2f_1fc41e04da98" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_92e7e65a_17de_4c35_b6f0_33d26ba68a7d" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of countries dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1596,7 +1700,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_816649fd_187a_4e7c_9d2f_1fc41e04da98:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_92e7e65a_17de_4c35_b6f0_33d26ba68a7d:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1615,11 +1719,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: crimea
-Rows: 24, Columns: 4, Size: 0.88 KB</code></pre>
+
+
+## crimea
+Rows: 24, Columns: 4, Size: 0.88 KB
+
+**Description:**
+Data related to Florence Nightingale's famous 'Coxcomb' chart about mortality in
+the Crimean War.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_550d4369_5122_4d0f_9db7_aa61e79602c5" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_19dc9962_88ef_47b0_98b3_39aff9a76356" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of crimea dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1699,7 +1809,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_550d4369_5122_4d0f_9db7_aa61e79602c5:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_19dc9962_88ef_47b0_98b3_39aff9a76356:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1718,11 +1828,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: disasters
-Rows: 100, Columns: 3, Size: 8.53 KB</code></pre>
+
+
+## disasters
+Rows: 100, Columns: 3, Size: 8.53 KB
+
+**Description:**
+Natural disaster data from https://ourworldindata.org/natural-catastrophes</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_f5213c9b_055c_494c_8a33_0b2f25135345" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_8a306e93_6bd1_408a_8fbd_6dcbd23eff85" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of disasters dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1801,7 +1916,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_f5213c9b_055c_494c_8a33_0b2f25135345:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_8a306e93_6bd1_408a_8fbd_6dcbd23eff85:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1820,11 +1935,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: driving
-Rows: 55, Columns: 4, Size: 4.31 KB</code></pre>
+
+
+## driving
+Rows: 55, Columns: 4, Size: 4.31 KB
+
+**Description:**
+Driving statistics, possibly related to a New York Times article from May 2,
+2010.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_0194b811_30e3_4e7c_8c43_c45620ca4e1e" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_f97ef8b9_bc2e_4366_a42a_70db78bb2291" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of driving dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -1904,7 +2025,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_0194b811_30e3_4e7c_8c43_c45620ca4e1e:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_f97ef8b9_bc2e_4366_a42a_70db78bb2291:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -1923,11 +2044,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: flare
-Rows: 100, Columns: 4, Size: 8.21 KB</code></pre>
+
+
+## flare
+Rows: 100, Columns: 4, Size: 8.21 KB
+
+**Description:**
+Hierarchical data, possibly related to software architecture or dependencies.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_adb849a5_5306_40b9_9132_8583dab9f9ca" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_4c4498c8_4120_46ff_9e43_ac484d921e71" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of flare dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2007,7 +2133,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_adb849a5_5306_40b9_9132_8583dab9f9ca:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_4c4498c8_4120_46ff_9e43_ac484d921e71:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2026,11 +2152,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: flare-dependencies
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## flare-dependencies
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_2e6c7958_754a_4103_89ec_4ce44d0d7214" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_3dd321d1_1074_410a_b0fd_3a5666f0af40" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of flare-dependencies dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2108,7 +2239,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_2e6c7958_754a_4103_89ec_4ce44d0d7214:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_3dd321d1_1074_410a_b0fd_3a5666f0af40:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2127,11 +2258,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: flights-10k
-Rows: 100, Columns: 5, Size: 12.63 KB</code></pre>
+
+
+## flights-10k
+Rows: 100, Columns: 5, Size: 12.63 KB
+
+**Description:**
+Flight delay statistics from U.S. Bureau of Transportation Statistics, subset of
+10,000 records.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_17abb2ab_a090_43f7_a349_34c1a1838210" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_1fa7e200_9070_43b6_bc3f_0b1325e8f519" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of flights-10k dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2212,7 +2349,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_17abb2ab_a090_43f7_a349_34c1a1838210:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_1fa7e200_9070_43b6_bc3f_0b1325e8f519:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2231,11 +2368,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: flights-20k
-Rows: 100, Columns: 5, Size: 12.63 KB</code></pre>
+
+
+## flights-20k
+Rows: 100, Columns: 5, Size: 12.63 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_4781ee4e_698a_48df_9806_e125004f168a" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_036ea2e1_1b89_4694_b62d_4cdbd338ae51" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of flights-20k dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2316,7 +2458,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_4781ee4e_698a_48df_9806_e125004f168a:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_036ea2e1_1b89_4694_b62d_4cdbd338ae51:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2335,11 +2477,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: flights-2k
-Rows: 100, Columns: 5, Size: 12.63 KB</code></pre>
+
+
+## flights-2k
+Rows: 100, Columns: 5, Size: 12.63 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_07baa16e_1747_4bbe_b6f5_1b831b5afdf5" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_458293ca_6876_4dcd_9b49_a4e6872f8497" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of flights-2k dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2420,7 +2567,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_07baa16e_1747_4bbe_b6f5_1b831b5afdf5:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_458293ca_6876_4dcd_9b49_a4e6872f8497:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2439,11 +2586,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: flights-5k
-Rows: 100, Columns: 5, Size: 12.63 KB</code></pre>
+
+
+## flights-5k
+Rows: 100, Columns: 5, Size: 12.63 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_b72d10f2_25a7_4787_9c4a_282c542ca1ae" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_ecfd4a4d_d2a7_48e0_a3e8_3b42074ec923" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of flights-5k dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2524,7 +2676,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_b72d10f2_25a7_4787_9c4a_282c542ca1ae:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_ecfd4a4d_d2a7_48e0_a3e8_3b42074ec923:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2543,11 +2695,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: flights-airport
-Rows: 100, Columns: 3, Size: 11.07 KB</code></pre>
+
+
+## flights-airport
+Rows: 100, Columns: 3, Size: 11.07 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_edf93490_ff2e_4964_8dd6_3d829799ba44" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_4e637c0e_365f_46bc_b4ae_1a0e07481e76" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of flights-airport dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2626,7 +2783,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_edf93490_ff2e_4964_8dd6_3d829799ba44:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_4e637c0e_365f_46bc_b4ae_1a0e07481e76:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2645,11 +2802,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: gapminder
-Rows: 100, Columns: 6, Size: 9.61 KB</code></pre>
+
+
+## gapminder
+Rows: 100, Columns: 6, Size: 9.61 KB
+
+**Description:**
+Demographic indicators (life expectancy, population, and fertility rate) for
+various countries from 1955 to 2005 at 5-year intervals.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_de92d56a_d517_47e1_980f_ecd7ae0bed55" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_209c0a28_7803_46c1_b58d_edee57bd0134" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of gapminder dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2731,7 +2894,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_de92d56a_d517_47e1_980f_ecd7ae0bed55:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_209c0a28_7803_46c1_b58d_edee57bd0134:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2750,11 +2913,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: gapminder-health-income
-Rows: 100, Columns: 4, Size: 8.05 KB</code></pre>
+
+
+## gapminder-health-income
+Rows: 100, Columns: 4, Size: 8.05 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_594833c6_e4ad_4964_a564_aaf170103da2" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_752ab88f_9a8b_4844_b7c1_4ab072d6ba55" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of gapminder-health-income dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2834,7 +3002,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_594833c6_e4ad_4964_a564_aaf170103da2:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_752ab88f_9a8b_4844_b7c1_4ab072d6ba55:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2853,11 +3021,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: github
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## github
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+GitHub-related data, generated using a custom script.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_67716620_ce2e_4e74_8a14_f4de44d32d6c" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_b8819f7d_9095_472d_aee8_386c3aca8c8a" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of github dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -2935,7 +3108,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_67716620_ce2e_4e74_8a14_f4de44d32d6c:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_b8819f7d_9095_472d_aee8_386c3aca8c8a:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -2954,11 +3127,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: income
-Rows: 100, Columns: 6, Size: 19.47 KB</code></pre>
+
+
+## income
+Rows: 100, Columns: 6, Size: 19.47 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_1db4605e_d671_42b5_b724_d84877818d0e" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_e1081dd5_8fe2_456f_a7a6_04944c16a475" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of income dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3040,7 +3218,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_1db4605e_d671_42b5_b724_d84877818d0e:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_e1081dd5_8fe2_456f_a7a6_04944c16a475:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3059,11 +3237,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: iowa-electricity
-Rows: 51, Columns: 3, Size: 3.96 KB</code></pre>
+
+
+## iowa-electricity
+Rows: 51, Columns: 3, Size: 3.96 KB
+
+**Description:**
+Annual net generation of electricity in Iowa by source, compiled by the U.S.
+Energy Information Administration.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_e26d3a59_2006_464f_ac1f_f8b5471e857b" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_c06d12b9_9d0b_4409_ba56_7ff05bca3d44" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of iowa-electricity dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3142,7 +3326,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_e26d3a59_2006_464f_ac1f_f8b5471e857b:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_c06d12b9_9d0b_4409_ba56_7ff05bca3d44:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3161,11 +3345,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: iris
-Rows: 100, Columns: 5, Size: 8.82 KB</code></pre>
+
+
+## iris
+Rows: 100, Columns: 5, Size: 8.82 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_13b7605b_339b_4884_9dd1_b3863d90858c" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_501a92d9_c342_4937_ac57_f0c287a4728d" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of iris dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3246,7 +3435,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_13b7605b_339b_4884_9dd1_b3863d90858c:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_501a92d9_c342_4937_ac57_f0c287a4728d:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3265,11 +3454,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: jobs
-Rows: 100, Columns: 5, Size: 13.70 KB</code></pre>
+
+
+## jobs
+Rows: 100, Columns: 5, Size: 13.70 KB
+
+**Description:**
+U.S. census data on occupations by sex and year across decades between 1850 and
+2000.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_e4d0f681_476f_4970_a9fb_7e2a68f85299" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_ae7a8676_edf1_462b_b4fb_e96e8971cb5d" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of jobs dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3350,7 +3545,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_e4d0f681_476f_4970_a9fb_7e2a68f85299:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_ae7a8676_edf1_462b_b4fb_e96e8971cb5d:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3369,11 +3564,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: la-riots
-Rows: 63, Columns: 11, Size: 27.62 KB</code></pre>
+
+
+## la-riots
+Rows: 63, Columns: 11, Size: 27.62 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_9fbdb356_75c4_4288_b67a_9ed6896a3a49" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_62200d94_9f4b_4ce3_84c5_ebaa55c5217f" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of la-riots dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3460,7 +3660,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_9fbdb356_75c4_4288_b67a_9ed6896a3a49:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_62200d94_9f4b_4ce3_84c5_ebaa55c5217f:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3479,11 +3679,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: londonCentroids
-Rows: 33, Columns: 3, Size: 2.55 KB</code></pre>
+
+
+## londonCentroids
+Rows: 33, Columns: 3, Size: 2.55 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_5c63b53d_d504_44a1_8077_216269675d80" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_2c583825_7e27_4b00_b967_1f0c4d864154" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of londonCentroids dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3562,7 +3767,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_5c63b53d_d504_44a1_8077_216269675d80:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_2c583825_7e27_4b00_b967_1f0c4d864154:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3581,11 +3786,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: lookup_groups
-Rows: 9, Columns: 2, Size: 0.67 KB</code></pre>
+
+
+## lookup_groups
+Rows: 9, Columns: 2, Size: 0.67 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_548d6cc8_a6da_45b4_9ec7_f32945cb6f47" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_481cea06_1587_43b0_8dba_870922cdb0d2" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of lookup_groups dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3663,7 +3873,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_548d6cc8_a6da_45b4_9ec7_f32945cb6f47:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_481cea06_1587_43b0_8dba_870922cdb0d2:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3682,11 +3892,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: lookup_people
-Rows: 9, Columns: 3, Size: 0.74 KB</code></pre>
+
+
+## lookup_people
+Rows: 9, Columns: 3, Size: 0.74 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_b7c6e96e_57d0_4e87_bc72_c2513ba51e46" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_d9b5fc01_1571_4ae9_939d_41b129deea6e" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of lookup_people dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3765,7 +3980,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_b7c6e96e_57d0_4e87_bc72_c2513ba51e46:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_d9b5fc01_1571_4ae9_939d_41b129deea6e:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3784,11 +3999,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: monarchs
-Rows: 12, Columns: 5, Size: 1.17 KB</code></pre>
+
+
+## monarchs
+Rows: 12, Columns: 5, Size: 1.17 KB
+
+**Description:**
+Chronological list of English and British monarchs from Elizabeth I through
+George IV.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_e41daaf1_8f5e_4734_a685_cbb6023df4a4" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_02c51c6a_33aa_46f0_83d2_9ebe224cfee6" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of monarchs dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3869,7 +4090,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_e41daaf1_8f5e_4734_a685_cbb6023df4a4:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_02c51c6a_33aa_46f0_83d2_9ebe224cfee6:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -3888,11 +4109,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: movies
-Rows: 100, Columns: 16, Size: 46.73 KB</code></pre>
+
+
+## movies
+Rows: 100, Columns: 16, Size: 46.73 KB
+
+**Description:**
+Movie dataset with intentionally included errors for instructional purposes.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_bc14114f_8b45_4f4b_be2a_3743224dca4d" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_4fa34c56_9ccb_4c99_931d_79c3ffc01dc0" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of movies dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -3984,7 +4210,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_bc14114f_8b45_4f4b_be2a_3743224dca4d:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_4fa34c56_9ccb_4c99_931d_79c3ffc01dc0:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4003,11 +4229,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: normal-2d
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## normal-2d
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_1749ca89_9345_4e37_bcd3_0ea070951df8" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_335fae0f_d1ed_484a_8b79_bc2224a53c34" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of normal-2d dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4085,7 +4316,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_1749ca89_9345_4e37_bcd3_0ea070951df8:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_335fae0f_d1ed_484a_8b79_bc2224a53c34:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4104,11 +4335,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: obesity
-Rows: 50, Columns: 3, Size: 3.40 KB</code></pre>
+
+
+## obesity
+Rows: 50, Columns: 3, Size: 3.40 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_6cd0965f_0746_47f9_8edf_f4a34f15a138" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_3ce3fbd4_2df7_4d0c_b937_09e803e4ec53" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of obesity dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4187,7 +4423,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_6cd0965f_0746_47f9_8edf_f4a34f15a138:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_3ce3fbd4_2df7_4d0c_b937_09e803e4ec53:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4206,11 +4442,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: ohlc
-Rows: 44, Columns: 7, Size: 4.50 KB</code></pre>
+
+
+## ohlc
+Rows: 44, Columns: 7, Size: 4.50 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_24e8a956_af12_4ae6_9a1e_2547e62e761a" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_eaf49f26_f9cc_4cf6_ad3c_8db60cacb1d3" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of ohlc dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4293,7 +4534,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_24e8a956_af12_4ae6_9a1e_2547e62e761a:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_eaf49f26_f9cc_4cf6_ad3c_8db60cacb1d3:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4312,11 +4553,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: points
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## points
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_3480330f_764b_4979_9b68_0ad92d4c8b04" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_6207dabe_c9fd_48d4_b429_f747b3c107b3" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of points dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4394,7 +4640,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_3480330f_764b_4979_9b68_0ad92d4c8b04:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_6207dabe_c9fd_48d4_b429_f747b3c107b3:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4413,11 +4659,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: population
-Rows: 100, Columns: 4, Size: 3.25 KB</code></pre>
+
+
+## population
+Rows: 100, Columns: 4, Size: 3.25 KB
+
+**Description:**
+United States population statistics by sex and age group across decades between
+1850 and 2000.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_14d83627_88b3_44a6_bb3f_d92a977ce9fb" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_c9fcc7cd_4e9b_4d34_a556_4cc3f9bfed8e" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of population dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4497,7 +4749,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_14d83627_88b3_44a6_bb3f_d92a977ce9fb:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_c9fcc7cd_4e9b_4d34_a556_4cc3f9bfed8e:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4516,11 +4768,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: population_engineers_hurricanes
-Rows: 52, Columns: 5, Size: 4.68 KB</code></pre>
+
+
+## population_engineers_hurricanes
+Rows: 52, Columns: 5, Size: 4.68 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_682036d6_6790_466b_977b_861e69977a3c" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_b8b9a709_1b85_4dbc_bb32_03dc6329d39b" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of population_engineers_hurricanes dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4601,7 +4858,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_682036d6_6790_466b_977b_861e69977a3c:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_b8b9a709_1b85_4dbc_bb32_03dc6329d39b:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4620,11 +4877,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: seattle-temps
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## seattle-temps
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_8176cb6b_b435_4364_9905_5439fba98490" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_50d7cbf8_712b_44f3_9f81_211328248738" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of seattle-temps dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4702,7 +4964,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_8176cb6b_b435_4364_9905_5439fba98490:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_50d7cbf8_712b_44f3_9f81_211328248738:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4721,11 +4983,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: seattle-weather
-Rows: 100, Columns: 6, Size: 9.20 KB</code></pre>
+
+
+## seattle-weather
+Rows: 100, Columns: 6, Size: 9.20 KB
+
+**Description:**
+Daily weather records for Seattle with metric units, synthesized from NOAA data.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_dda60c66_e177_47ce_b1dc_b44b3845b711" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_aeb6954c_bbd1_4168_89c9_0ee2f15b3b39" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of seattle-weather dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4807,7 +5074,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_dda60c66_e177_47ce_b1dc_b44b3845b711:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_aeb6954c_bbd1_4168_89c9_0ee2f15b3b39:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4826,11 +5093,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: sf-temps
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## sf-temps
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_a70007d9_ebd9_4306_b041_c7d9bf774d23" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_6a2b027f_37c8_4aba_8495_f23652dde0c0" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of sf-temps dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -4908,7 +5180,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_a70007d9_ebd9_4306_b041_c7d9bf774d23:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_6a2b027f_37c8_4aba_8495_f23652dde0c0:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -4927,11 +5199,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: sp500
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## sp500
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+S&amp;P 500 index values from 2000 to 2020, retrieved from Yahoo Finance.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_ff8b3746_9f52_45fc_bfb6_891f0ed270d3" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_c218356f_c34a_4b6b_90ff_e50fd6ced378" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of sp500 dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5009,7 +5286,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_ff8b3746_9f52_45fc_bfb6_891f0ed270d3:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_c218356f_c34a_4b6b_90ff_e50fd6ced378:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5028,11 +5305,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: stocks
-Rows: 100, Columns: 3, Size: 6.87 KB</code></pre>
+
+
+## stocks
+Rows: 100, Columns: 3, Size: 6.87 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_49e26d85_10d8_4dca_a3cb_31c9d6fd67a1" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_40b22898_96b7_4d13_8e09_a1b0d21335f4" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of stocks dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5111,7 +5393,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_49e26d85_10d8_4dca_a3cb_31c9d6fd67a1:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_40b22898_96b7_4d13_8e09_a1b0d21335f4:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5130,11 +5412,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: udistrict
-Rows: 100, Columns: 2, Size: 6.39 KB</code></pre>
+
+
+## udistrict
+Rows: 100, Columns: 2, Size: 6.39 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_de0da6ea_836f_4e69_a286_e3e98a9fd036" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_4289ca88_1e0e_4fed_9192_8246909aa1dd" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of udistrict dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5212,7 +5499,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_de0da6ea_836f_4e69_a286_e3e98a9fd036:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_4289ca88_1e0e_4fed_9192_8246909aa1dd:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5231,11 +5518,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: unemployment
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## unemployment
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+County-level unemployment rates in the United States, generally consistent with
+2009 levels.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_4c8beb4f_d647_49b8_9836_e8239f406790" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_e8ae29d2_8c78_431c_b13b_153ab4462856" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of unemployment dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5313,7 +5606,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_4c8beb4f_d647_49b8_9836_e8239f406790:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_e8ae29d2_8c78_431c_b13b_153ab4462856:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5332,11 +5625,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: unemployment-across-industries
-Rows: 100, Columns: 6, Size: 9.80 KB</code></pre>
+
+
+## unemployment-across-industries
+Rows: 100, Columns: 6, Size: 9.80 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_893f3332_53ca_4002_844b_7024b736aa6c" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_b5ec3536_c083_4ceb_a9f4_d832aa8ff214" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of unemployment-across-industries dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5418,7 +5716,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_893f3332_53ca_4002_844b_7024b736aa6c:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_b5ec3536_c083_4ceb_a9f4_d832aa8ff214:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5437,11 +5735,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: uniform-2d
-Rows: 100, Columns: 2, Size: 1.69 KB</code></pre>
+
+
+## uniform-2d
+Rows: 100, Columns: 2, Size: 1.69 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_1be9f3c4_41bf_41ef_8f93_2bc6d358e9d2" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_a31dbb28_553c_4dc4_81ce_d412522022e5" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of uniform-2d dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5519,7 +5822,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_1be9f3c4_41bf_41ef_8f93_2bc6d358e9d2:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_a31dbb28_553c_4dc4_81ce_d412522022e5:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5538,11 +5841,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: us-employment
-Rows: 100, Columns: 24, Size: 23.86 KB</code></pre>
+
+
+## us-employment
+Rows: 100, Columns: 24, Size: 23.86 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_7ed90c80_fa22_408f_9552_2c69cf12a3ce" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_c6a3f585_2a64_4a19_aac2_89c55e67d955" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of us-employment dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5642,7 +5950,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_7ed90c80_fa22_408f_9552_2c69cf12a3ce:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_c6a3f585_2a64_4a19_aac2_89c55e67d955:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5661,11 +5969,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: us-state-capitals
-Rows: 50, Columns: 4, Size: 6.52 KB</code></pre>
+
+
+## us-state-capitals
+Rows: 50, Columns: 4, Size: 6.52 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_b0ae04fb_3e12_47e8_bdbc_8c082d28eae1" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_1db77919_c2ec_424a_b7df_b41095db43b5" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of us-state-capitals dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5745,7 +6058,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_b0ae04fb_3e12_47e8_bdbc_8c082d28eae1:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_1db77919_c2ec_424a_b7df_b41095db43b5:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5764,11 +6077,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: volcano
-Rows: 100, Columns: 3, Size: 2.47 KB</code></pre>
+
+
+## volcano
+Rows: 100, Columns: 3, Size: 2.47 KB
+
+**Description:**
+Topographic information for Maunga Whau (Mt Eden) volcano in Auckland, New
+Zealand.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_ef50443a_b4ca_460a_8903_9e211fd9a427" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_23691f6a_843c_4477_ae1c_7ecde5c4cbf0" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of volcano dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5847,7 +6166,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_ef50443a_b4ca_460a_8903_9e211fd9a427:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_23691f6a_843c_4477_ae1c_7ecde5c4cbf0:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5866,11 +6185,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: weather
-Rows: 10, Columns: 6, Size: 6.63 KB</code></pre>
+
+
+## weather
+Rows: 10, Columns: 6, Size: 6.63 KB
+
+**Description:**
+Instructional dataset showing actual and predicted temperature data.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_fc7aa963_3d0b_47e9_a5c8_852f6a1c090e" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_e725a9bd_85b7_4011_9294_87aae3268945" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of weather dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -5952,7 +6276,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_fc7aa963_3d0b_47e9_a5c8_852f6a1c090e:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_e725a9bd_85b7_4011_9294_87aae3268945:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -5971,11 +6295,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: weball26
-Rows: 58, Columns: 25, Size: 27.84 KB</code></pre>
+
+
+## weball26
+Rows: 58, Columns: 25, Size: 27.84 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_0a06333a_94dd_4f06_be3f_8ea014e2621c" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_ae13f199_93f4_45ff_a8f4_08e36d32e0ad" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of weball26 dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -6076,7 +6405,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_0a06333a_94dd_4f06_be3f_8ea014e2621c:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_ae13f199_93f4_45ff_a8f4_08e36d32e0ad:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -6095,11 +6424,17 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: wheat
-Rows: 52, Columns: 3, Size: 1.35 KB</code></pre>
+
+
+## wheat
+Rows: 52, Columns: 3, Size: 1.35 KB
+
+**Description:**
+250 years of wheat prices alongside weekly wages and reigning monarchs, based on
+William Playfair's 1822 chart.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_1eedcd22_3f7e_4e01_9b72_407633623124" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_36061404_c9cd_4200_a5c2_6a2cdcdefc0e" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of wheat dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -6178,7 +6513,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_1eedcd22_3f7e_4e01_9b72_407633623124:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_36061404_c9cd_4200_a5c2_6a2cdcdefc0e:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -6197,11 +6532,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: windvectors
-Rows: 100, Columns: 5, Size: 4.04 KB</code></pre>
+
+
+## windvectors
+Rows: 100, Columns: 5, Size: 4.04 KB
+
+**Description:**
+No description available.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_788da2f6_049a_4dc6_87c1_162944064a7a" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_266d1220_4bf0_4bf4_b6d6_9743e2b24302" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of windvectors dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -6282,7 +6622,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_788da2f6_049a_4dc6_87c1_162944064a7a:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_266d1220_4bf0_4bf4_b6d6_9743e2b24302:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
@@ -6301,11 +6641,16 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <div class="cell-output cell-output-stdout">
 <pre><code>
 
-Dataset: zipcodes
-Rows: 100, Columns: 6, Size: 22.99 KB</code></pre>
+
+
+## zipcodes
+Rows: 100, Columns: 6, Size: 22.99 KB
+
+**Description:**
+Zipcode data from GeoNames.org</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<table id="itables_15a9fe1e_db58_4943_bb18_a8927bfc0097" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_291dcc85_533a_41d5_9bbf_17e8750cd98a" class="display nowrap" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <caption style="white-space: nowrap; overflow: hidden">Top 100 rows of zipcodes dataset</caption><thead>
     <tr style="text-align: right;">
       
@@ -6387,7 +6732,7 @@ Loading ITables v2.2.2 from the <code>init_notebook_mode</code> cell...
 <script type="module">
     const { DataTable, jQuery: $ } = await import(window._datatables_src_for_itables_2_2_2);
 
-    document.querySelectorAll("#itables_15a9fe1e_db58_4943_bb18_a8927bfc0097:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_291dcc85_533a_41d5_9bbf_17e8750cd98a:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 

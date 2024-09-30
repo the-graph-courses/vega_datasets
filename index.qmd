@@ -1,7 +1,7 @@
 ---
 title: "Vega datasets"
+toc: true
 ---
-
 
 ```{python}
 from vega_datasets import data
@@ -20,6 +20,44 @@ for dataset in data.list_datasets():
 import pandas as pd
 from vega_datasets import data
 from itables import show
+import textwrap
+
+dataset_descriptions = {
+    "7zip": "Application icon from the open-source 7-Zip software project.",
+    "airports": "Airport data, source not specified in the original description.",
+    "annual-precip": "A raster grid of global annual precipitation for the year 2016 at a resolution 1 degree of lon/lat per cell, from CFSv2.",
+    "anscombe": "Dataset from 'Graphs in Statistical Analysis' by F. J. Anscombe, The American Statistician.",
+    "barley": "Results from a 1930s agricultural experiment in Minnesota, containing yields for 10 different varieties of barley at six different sites.",
+    "birdstrikes": "Bird strike data from http://wildlife.faa.gov",
+    "budget": "U.S. Budget data for FY 2016 from the Office of Management and Budget.",
+    "burtin": "Dataset based on Will Burtin's 1951 visualization of antibiotic effectiveness, comparing three antibiotics against 16 bacteria.",
+    "cars": "Car statistics dataset from http://lib.stat.cmu.edu/datasets/",
+    "countries": "Demographic indicators (life expectancy and fertility rate) for various countries from 1955 to 2000 at 5-year intervals.",
+    "crimea": "Data related to Florence Nightingale's famous 'Coxcomb' chart about mortality in the Crimean War.",
+    "disasters": "Natural disaster data from https://ourworldindata.org/natural-catastrophes",
+    "driving": "Driving statistics, possibly related to a New York Times article from May 2, 2010.",
+    "earthquakes": "Earthquake data from USGS, captured on Feb 6, 2018.",
+    "ffox": "Application icon from the open-source Firefox software project.",
+    "flare": "Hierarchical data, possibly related to software architecture or dependencies.",
+    "flights-10k": "Flight delay statistics from U.S. Bureau of Transportation Statistics, subset of 10,000 records.",
+    "gapminder": "Demographic indicators (life expectancy, population, and fertility rate) for various countries from 1955 to 2005 at 5-year intervals.",
+    "gimp": "Application icon from the open-source GIMP software project.",
+    "github": "GitHub-related data, generated using a custom script.",
+    "iowa-electricity": "Annual net generation of electricity in Iowa by source, compiled by the U.S. Energy Information Administration.",
+    "jobs": "U.S. census data on occupations by sex and year across decades between 1850 and 2000.",
+    "miserables": "Co-occurrence of characters in Victor Hugo's Les Misérables.",
+    "monarchs": "Chronological list of English and British monarchs from Elizabeth I through George IV.",
+    "movies": "Movie dataset with intentionally included errors for instructional purposes.",
+    "population": "United States population statistics by sex and age group across decades between 1850 and 2000.",
+    "seattle-weather": "Daily weather records for Seattle with metric units, synthesized from NOAA data.",
+    "sp500": "S&P 500 index values from 2000 to 2020, retrieved from Yahoo Finance.",
+    "unemployment": "County-level unemployment rates in the United States, generally consistent with 2009 levels.",
+    "us-10m": "U.S. map data at 1:10 million scale.",
+    "volcano": "Topographic information for Maunga Whau (Mt Eden) volcano in Auckland, New Zealand.",
+    "weather": "Instructional dataset showing actual and predicted temperature data.",
+    "wheat": "250 years of wheat prices alongside weekly wages and reigning monarchs, based on William Playfair's 1822 chart.",
+    "zipcodes": "Zipcode data from GeoNames.org",
+}
 
 
 def get_dataset_info(dataset_name):
@@ -33,6 +71,9 @@ def get_dataset_info(dataset_name):
             "rows": len(df),
             "columns": len(df.columns),
             "size_kb": df.memory_usage(deep=True).sum() / 1024,
+            "description": dataset_descriptions.get(
+                dataset_name, "No description available."
+            ),
         }
     except Exception as e:
         return None
@@ -115,10 +156,12 @@ dataset_info = [
 ]
 
 for info in dataset_info:
-    print(f"Dataset: {info['name']}")
+    print(f"\n\n## {info['name']}")
     print(
         f"Rows: {info['rows']}, Columns: {info['columns']}, Size: {info['size_kb']:.2f} KB"
     )
+    print("\n**Description:**")
+    print(textwrap.fill(info["description"], width=80))
     show(info["df"], caption=f"Top 100 rows of {info['name']} dataset")
     print("\n")
 ```
